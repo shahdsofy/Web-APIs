@@ -82,8 +82,8 @@ builder.Services.AddSwaggerGen(options =>
 
 ## 6️⃣ Enable CORS
 
-CORS بتحدد مين مسموح له يستهلك الـ API.
-Enabled by default.
+* CORS بتحدد مين مسموح له يستهلك الـ API.
+* Enabled by default.
 
 ### مثال:
 
@@ -261,6 +261,11 @@ public class MoviesController : ControllerBase
         {
             return BadRequest("Poster size exceeds the maximum allowed size of 1 MB.");
         }
+
+        var isValidGenre = await _genresService.IsvalidGenre(dto.GenreId);
+
+        if(!isValidGenre)
+              return BadRequest("Invalid genere ID!");
 
         using var memoryStream = new MemoryStream();
         await dto.Poster.CopyToAsync(memoryStream);
